@@ -11,8 +11,10 @@ speech_to_text = SpeechToTextV1(
 
 filename = join(dirname(__file__), './Untitled.wav')
 
-with open(filename, 'rb') as audio_file:
-    print(json.dumps(speech_to_text.recognize(
-        audio_file, content_type='audio/wav', timestamps=True,
-        word_confidence=True),
-        indent=2))
+
+def call_speech_to_text_on_wav(wav_file_path):
+	with open(wav_file_path, 'rb') as audio_file:
+	    return json.dumps(speech_to_text.recognize(
+	        	audio_file, content_type='audio/wav', timestamps=True,
+	        	word_confidence=True),
+	        	indent=2)
