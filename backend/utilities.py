@@ -1,6 +1,7 @@
 import simplejson as json
 import requests, language_check
 from pprint import pprint
+import math
 
 temp = []
 with open('data/image_text.json') as infile:
@@ -25,6 +26,13 @@ def grammar_suggestions(phrase):
     matches = tool.check(phrase)
     res = []
     for m in matches:
+        if m.ruleId == 'UPPERCASE_SENTENCE_START':
+            continue
         res.append({'ruleId' : m.ruleId, 'replacements' : m.replacements})
-    return res
-
+    print(res)
+    x = float(len(res))
+    number_of_grammar_errors = x/(1+abs(x))
+    lst = []
+    for r in res:
+        lst.append(r['replacements'])
+    return {"number_of_grammar_errors" : number_of_grammar_errors, "suggestions" :lst } # number of grammatical errors
