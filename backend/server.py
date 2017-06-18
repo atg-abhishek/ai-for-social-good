@@ -6,6 +6,8 @@ from pprint import pprint
 from jsonParser import find_transcript
 from process_text import get_feature_vec_default_times
 
+import random #TODO remove only for testing 
+
 HOST = None
 app = Flask(__name__)
 
@@ -26,6 +28,16 @@ def raw_audio():
     whole_transcript = find_transcript(res)
     res = get_feature_vec_default_times(whole_transcript)
     return jsonify({"result"  : res})
+
+@app.route('/get_results')
+def get_results():
+    score = random.uniform(0,1)
+    duration = random.uniform(30, 120)
+    number_of_pauses = random.randint(0,25)
+
+    res = {"score" : score, "duration" : duration, "number_of_pauses" : number_of_pauses}
+
+    return jsonify(res)
 
 if __name__ == "__main__":
     app.run(debug=True, host=HOST, port=17001, threaded=True)
