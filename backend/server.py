@@ -14,7 +14,7 @@ if len(sys.argv)>1 and sys.argv[1] == "prod":
 
 @app.route('/')
 def hello():
-    return "You've reached the AI for Social Good hackathon app and the server is up and running"
+    return "SERVER CRASHEDDDD OHNOOOOO!!!!"
 
 @app.route('/raw_audio', methods=['POST'])
 def raw_audio():

@@ -268,7 +268,7 @@ def get_feature_vec_default_times(text):
     times = [0.1]*len(tokens)
     pos_tags = nltk.pos_tag(tokens)
     return get_feature_vec(text, times)
-
+'''
 if __name__ == "__main__":
     text_1 = "the red fox jumped over uh the red fox jumped over the hungry dog"
     text_2 = "Last night I was on the subway um so last night I was on the Montreal metro"
@@ -290,3 +290,4 @@ if __name__ == "__main__":
     # tokens = nltk.word_tokenize(text_8)
     # pos_tags = nltk.pos_tag(tokens)
     # print(pos_tags)
+'''
