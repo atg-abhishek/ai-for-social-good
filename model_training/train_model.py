@@ -2,6 +2,7 @@ from sklearn import svm
 from sklearn.metrics import accuracy_score, f1_score, roc_curve
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
+import pandas as pd
 import csv
 
 filename = 'training_data_1.csv'
