@@ -62,7 +62,7 @@ def raw_audio():
         lst5.append(number_of_grammar_errors)
         sess.update({'model_scores' : lst1, 'semantic_scores' : lst2, 'durations' : lst3, 'nop' : lst4,'noge' : number_of_grammar_errors}, Sess.session_id == session_id)
     else:
-        sess.insert({'session_id' : session_id, 'info' : {'model_scores' : [score] , 'semantic_scores' : [semantic_score] , 'durations' : [duration], 'nop' : [number_of_pauses], 'noge' : number_of_grammar_errors}   })
+        sess.insert({'session_id' : session_id, 'info' : {'model_scores' : [score] , 'semantic_scores' : [semantic_score] , 'durations' : [duration], 'nop' : [number_of_pauses], 'noge' : [number_of_grammar_errors] }   })
     
     return jsonify({"result"  : "success"})
 
