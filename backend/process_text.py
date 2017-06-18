@@ -278,6 +278,9 @@ def get_feature_vec(text, times):
 
     return feature_dict
 
+def remove_hesitation(text):
+    return text.replace("%HESITATION","")
+
 def get_feature_vec_default_times(text):
     tokens = nltk.word_tokenize(text)
     times = [0.1]*len(tokens)
