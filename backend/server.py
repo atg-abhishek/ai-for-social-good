@@ -5,6 +5,7 @@ from speech_to_text import *
 from pprint import pprint
 from jsonParser import find_transcript
 from process_text import get_feature_vec_default_times, dictionary2row
+from classifier import predict_score
 import pandas as pd
 
 import random #TODO remove only for testing 
@@ -29,7 +30,9 @@ def raw_audio():
     whole_transcript = find_transcript(res)
     res = get_feature_vec_default_times(whole_transcript)
     row = dictionary2row(res)
-    return jsonify({"result"  : row})
+    score = predict_score(row)
+    print(score)
+    return jsonify({"result"  : res})
 
 @app.route('/get_results')
 def get_results():
