@@ -73,9 +73,12 @@ def get_results():
     semantic_scores = specific_sess['semantic_scores'][:4]
     noge = specific_sess['noge'][:4]
     model_scores = specific_sess['model_scores'][:4]
+    final_list = []
+    for m in model_scores:
+        final_list.append(m[0])
     final_sem_score = sum(semantic_scores)/len(semantic_scores)
     final_noge_score = sum(noge)/len(noge)
-    final_model_score = sum(model_scores)/len(model_scores)    
+    final_model_score = sum(final_list)/len(final_list)    
 
     final_score = 0.5*final_model_score + 0.2*final_noge_score + 0.3*final_sem_score
 
