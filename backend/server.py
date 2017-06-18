@@ -50,15 +50,15 @@ def raw_audio():
     
     specific_sess = sess.search(Sess.session_id == session_id)
     if len(specific_sess)>0:
-        lst1 = specific_sess[0]['model_scores']
+        lst1 = specific_sess[0]['info']['model_scores']
         lst1.append(score)
-        lst2 = specific_sess[0]['semantic_scores']
+        lst2 = specific_sess[0]['info']['semantic_scores']
         lst2.append(semantic_score)
-        lst3 = specific_sess[0]['durations']
+        lst3 = specific_sess[0]['info']['durations']
         lst3.append(duration)
-        lst4 = specific_sess[0]['nop']
+        lst4 = specific_sess[0]['info']['nop']
         lst4.append(number_of_pauses)
-        lst5 = specific_sess[0]['noge']
+        lst5 = specific_sess[0]['info']['noge']
         lst5.append(number_of_grammar_errors)
         sess.update({'model_scores' : lst1, 'semantic_scores' : lst2, 'durations' : lst3, 'nop' : lst4,'noge' : number_of_grammar_errors}, Sess.session_id == session_id)
     else:
