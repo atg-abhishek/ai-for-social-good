@@ -1,7 +1,6 @@
 from sklearn import svm
 from sklearn.metrics import accuracy_score, f1_score, roc_curve
 from sklearn.model_selection import train_test_split
-from imblearn.over_sampling import SMOTE
 from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
 import csv
 
