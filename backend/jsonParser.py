@@ -5,8 +5,6 @@ from pprint import pprint
 def parse():
     with open('data/speech_to_text.json') as data_file:
         data = json.load(data_file)
-        print(find_transcript(data))
-        return
         result = findKey(data, 'transcript')
         for x in range(len(result)):
             for y in range(len(result[x])):
@@ -39,3 +37,11 @@ def find_transcript(dictionary):
         temp += row['alternatives'][0]['transcript']
 
     return temp
+
+def get_last_timestamp(dictionary):
+    res = dictionary['results']
+    last = res[len(res) - 1]['alternatives']
+    pprint(last)
+    last = last[0]['timestamps']
+    last_word = last[len(last) - 1]
+    return float(last_word[2])
