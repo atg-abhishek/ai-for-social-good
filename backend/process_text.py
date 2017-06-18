@@ -1,8 +1,6 @@
 import nltk
 import pandas as pd
 from requests import get
-from nltk import grammar, parse
-from collections import Counter
 
 def eval_semantic_sim(str1, str2):
     """
@@ -160,7 +158,7 @@ def get_feature_vec(text, times):
     for word in tokens_filtered:
         if word == "on":
             f_prep_on += 1
-    feature_dict["proposition_out"] = f_prep_in
+    feature_dict["proposition_on"] = f_prep_in
 
     # present progressive "is doing, is drinking"
     f_present_prog = 0
@@ -180,14 +178,19 @@ def get_feature_vec(text, times):
     feature_dict["plural_s"] = f_plural
 
     # f_irreg_past (number of irregular past verbs)
+    f_reg_past = 0
     f_irreg_past = 0
     for verb in verb_list:
         if verb[1] == "VBN":
             word = list(verb[0])
             if word[-2]+word[-1] == "ed":
+                f_reg_past += 1
+            else:
                 f_irreg_past += 1
 
-    feature_dict["irregular_past_tense"] = f_irreg_past
+    feature_dict["regular_past_tense"] = f_reg_past
+    
+    
 
     f_possessive_s, f_cont_aux, f_cont_copula, = get_pos_contr(pos_tags)
     feature_dict["possessive_s"] = f_possessive_s
