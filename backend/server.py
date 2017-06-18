@@ -36,7 +36,6 @@ def raw_audio():
     res = call_speech_to_text_on_wav(f) 
     res = json.loads(res)
     whole_transcript = find_transcript(res)
-    print(whole_transcript)
     res = get_feature_vec_default_times(whole_transcript)
     number_of_pauses = res['fillers']
     # TODO : get the duration of the clip
@@ -51,7 +50,9 @@ def raw_audio():
     else:
         sess.insert({'session_id' : session_id, 'scores' : [score]})
     
-    # TODO : calculate final score 
+    
+    clean_string = remove_hesitation(whole_transcript)
+
 
     return jsonify({"result"  : "success"})
 
@@ -60,7 +61,8 @@ def get_results():
     score = random.uniform(0,1)
     duration = random.uniform(30, 120)
     number_of_pauses = random.randint(0,25)
-
+    
+    # TODO : calculate final score 
     res = {"score" : score, "duration" : duration, "number_of_pauses" : number_of_pauses}
 
     return jsonify(res)
