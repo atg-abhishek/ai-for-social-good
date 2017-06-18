@@ -189,8 +189,7 @@ def get_feature_vec(text, times):
                 f_irreg_past += 1
 
     feature_dict["regular_past_tense"] = f_reg_past
-    
-    
+    feature_dict["irregular_past_tense"] = f_irreg_past
 
     f_possessive_s, f_cont_aux, f_cont_copula, = get_pos_contr(pos_tags)
     feature_dict["possessive_s"] = f_possessive_s
