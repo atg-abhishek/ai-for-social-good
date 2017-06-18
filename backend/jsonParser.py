@@ -3,14 +3,16 @@ import sys
 from pprint import pprint
 
 def parse():
-    with open('jsonData.json') as data_file:
+    with open('data/speech_to_text.json') as data_file:
         data = json.load(data_file)
         result = findKey(data, 'transcript')
         print result
         # pprint(data.items())
 
+
 def findKey(dictionary, key):
     # transcriptDictionary = {}
+    print "dragon"
     if key in dictionary:
         return dictionary[key]
     for k, v in dictionary.items():
@@ -20,4 +22,7 @@ def findKey(dictionary, key):
                 return item
 
 
-parse()
+def main():
+    parse()
+
+main()
