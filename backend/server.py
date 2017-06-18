@@ -4,7 +4,7 @@ from utilities import *
 from speech_to_text import *
 from pprint import pprint
 from jsonParser import find_transcript
-from process_text import get_feature_vec_default_times
+from process_text import get_feature_vec_default_times, dictionary2row
 import pandas as pd
 
 import random #TODO remove only for testing 
@@ -28,6 +28,7 @@ def raw_audio():
     res = json.loads(res)
     whole_transcript = find_transcript(res)
     res = get_feature_vec_default_times(whole_transcript)
+    row = dictionary2row(res)
     return jsonify({"result"  : res})
 
 @app.route('/get_results')
