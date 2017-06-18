@@ -59,7 +59,7 @@ def get_pos_contr(pos_tags):
 def get_feature_vec(text, times):
 
     text = text.lower()
-    fillers = ['um', 'uh', 'oh', 'hm', '%HESITATION']
+    fillers = ['um', 'uh', 'oh', 'hm', '%HESITATION', 'HESITATION']
 
     tokens_unfiltered = nltk.word_tokenize(text)
 
@@ -270,6 +270,35 @@ def get_feature_vec_default_times(text):
     times = [0.1]*len(tokens)
     pos_tags = nltk.pos_tag(tokens)
     return get_feature_vec(text, times)
+
+def dictionary2row(dictionary):
+    df = pd.DataFrame.from_dict(dictionary, orient='index')
+    return [
+        df['child_TNW'],
+        5.0,
+        0,
+        df['freq_ttr'],
+        df['r_2_i_verbs'],
+        df['num_pos_tags'],
+        df['repetition'],
+        df['retracing'],
+        df['fillers'],
+        df['z_mlu_sli'],
+        df['z_mlu_td'],
+        df['z_ndw_td'],
+        df['z_utts_sli'],
+        df['z_utts_td'],
+        df['mlu_words'],
+        df['verb_utt'],
+        df['present_progressive'],
+        df['proposition_in'],
+        df['propositions_out'],
+        df['plural_s'],
+        df['irregular_past_tense'],
+        df['possessive_s'],
+        df['uncontractible_copula'],
+        df['']
+    ]
 '''
 if __name__ == "__main__":
     text_1 = "the red fox jumped over uh the red fox jumped over the hungry dog"

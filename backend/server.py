@@ -5,6 +5,7 @@ from speech_to_text import *
 from pprint import pprint
 from jsonParser import find_transcript
 from process_text import get_feature_vec_default_times
+import pandas as pd
 
 import random #TODO remove only for testing 
 
