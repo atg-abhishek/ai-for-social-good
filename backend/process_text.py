@@ -55,6 +55,17 @@ def get_pos_contr(pos_tags):
 
     return f_possessive_s, f_cont_aux, f_cont_copula
 
+def filter_hesitations_from_ibm(tokens):
+    new_tokens = []
+    # will break if sentence ends in % but whatever
+    for i in range(len(tokens)):
+        if tokens[i] == '%' and tokens[i + 1].lower() == 'hesitation':
+            i = i + 1
+        else:
+            new_tokens.append(tokens[i])
+
+    return new_tokens
+
 
 def get_feature_vec(text, times):
 
@@ -64,7 +75,8 @@ def get_feature_vec(text, times):
     tokens_unfiltered = nltk.word_tokenize(text)
 
     # remove fillers
-    tokens_filtered = [word for word in tokens_unfiltered if word not in fillers]
+    tokens_filtered = filter_hesitations_from_ibm(tokens_unfiltered)
+    # tokens_filtered = [word for word in tokens_unfiltered if word not in fillers]
 
     # get time_tuples for actual words only
     filtered_times = [times[i] for i in range(len(tokens_unfiltered))
