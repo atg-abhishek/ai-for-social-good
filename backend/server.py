@@ -11,6 +11,7 @@ from tinydb import TinyDB, Query
 
 import random #TODO remove only for testing 
 
+temp = 0
 DB_ADDRESS = "db.json"
 HOST = None
 app = Flask(__name__)
@@ -31,7 +32,9 @@ def raw_audio():
         return "There was no file attached"
     f = request.files['file']
     body = request.form
+    global temp
     session_id = int(body['session_id']) 
+    temp = session_id
     image_number = int(body['image_number']) - 1
     res = call_speech_to_text_on_wav(f) 
     res = json.loads(res)
@@ -65,10 +68,12 @@ def raw_audio():
     
     return jsonify({"result"  : "success"})
 
-@app.route('/get_results', methods=['POST'])
+@app.route('/get_results')
 def get_results():
     body = request.form
-    session_id = int(body['session_id'])
+    # session_id = int(body['session_id'])
+    global temp
+    session_id = temp
     specific_sess = sess.search(Sess.session_id == session_id)[0]
     semantic_scores = specific_sess['semantic_scores'][:4]
     noge = specific_sess['noge'][:4]
