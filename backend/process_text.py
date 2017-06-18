@@ -76,6 +76,7 @@ def get_feature_vec(text, times):
 
     # remove fillers
     tokens_filtered = filter_hesitations_from_ibm(tokens_unfiltered)
+    print(tokens_filtered)
     # tokens_filtered = [word for word in tokens_unfiltered if word not in fillers]
 
     # get time_tuples for actual words only
