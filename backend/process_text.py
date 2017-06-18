@@ -264,7 +264,7 @@ def get_feature_vec(text, times):
     return feature_dict
 
 def get_feature_vec_default_times(text):
-    tokens = nltk.word_tokenize(text_6)
+    tokens = nltk.word_tokenize(text)
     times = [0.1]*len(tokens)
     pos_tags = nltk.pos_tag(tokens)
     return get_feature_vec(text, times)
