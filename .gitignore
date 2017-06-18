@@ -2,3 +2,4 @@ backend/NOTES
 db.json
 .DS_STORE
 ../.DS_STORE
+__pycache__

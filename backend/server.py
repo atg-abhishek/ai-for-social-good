@@ -35,23 +35,30 @@ def raw_audio():
     image_number = int(body['image_number']) - 1
     res = call_speech_to_text_on_wav(f) 
     res = json.loads(res)
+    duration = get_last_timestamp(res)
     whole_transcript = find_transcript(res)
     res = get_feature_vec_default_times(whole_transcript)
     number_of_pauses = res['fillers']
-    # TODO : get the duration of the clip
     row = dictionary2row(res)
     score = predict_score(row)[0]
-    score = list(score)
+    score = list(score) #from the model 
+    clean_string = remove_hesitation(whole_transcript) # this string is the transcript of what was said without %HESITATION
+    semantic_score = calculate_semantic_distance(clean_string,image_number) 
+    
     specific_sess = sess.search(Sess.session_id == session_id)
     if len(specific_sess)>0:
-        lst = specific_sess[0]['scores']
-        lst.append(score)
-        sess.update({'scores' : lst}, Sess.session_id == session_id)
+        lst1 = specific_sess[0]['model_scores']
+        lst1.append(score)
+        lst2 = specific_sess[0]['semantic_scores']
+        lst2.append(semantic_score)
+        lst3 = specific_sess[0]['durations']
+        lst3.append(duration)
+        sess.update({'model_scores' : lst1, 'semantic_scores' : lst2, 'durations' : lst3}, Sess.session_id == session_id)
     else:
-        sess.insert({'session_id' : session_id, 'scores' : [score]})
+        sess.insert({'session_id' : session_id, 'info' : {'model_scores' : [score] , 'semantic_scores' : [semantic_score] , 'durations' : [duration]}   })
     
     
-    clean_string = remove_hesitation(whole_transcript)
+    
 
 
     return jsonify({"result"  : "success"})
