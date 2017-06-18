@@ -24,6 +24,9 @@ def eval_semantic_sim(str1, str2):
         'Error in getting similarity for %s: %s' % ((str1, str2), response)
         return 0.0
 
+def remove_hesitation(text):
+    return text.replace("%HESITATION","")
+
 def get_pos_contr(pos_tags):
     # possessives
     # differentiate possessives from contractible auxiliary and contractible copula
@@ -278,9 +281,6 @@ def get_feature_vec(text, times):
 
     return feature_dict
 
-def remove_hesitation(text):
-    return text.replace("%HESITATION","")
-
 def get_feature_vec_default_times(text):
     tokens = nltk.word_tokenize(text)
     times = [0.1]*len(tokens)
@@ -315,8 +315,8 @@ def dictionary2row(dictionary):
         df['possessive_s'],
         df['uncontractible_copula'],
         df['regular_past_tense'],
-        2, #regular_3rd,
-        2, #irregular_3rd,
+        0, #regular_3rd,
+        0, #irregular_3rd,
         df['uncontractible_auxiliary'],
         df['contractible_copula'],
         df['contractible_auxiliary'],
