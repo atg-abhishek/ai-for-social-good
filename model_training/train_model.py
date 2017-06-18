@@ -41,6 +41,6 @@ x_train, x_test, y_train, y_test = train_test_split(data, Y, test_size = 0.1, ra
 
 rf.fit(x_train, y_train)
 from sklearn.externals import joblib
-joblib.dump(clf, 'rfclassifier.pkl') 
+joblib.dump(rf, 'rfclassifier.pkl') 
 
 
