@@ -293,7 +293,7 @@ def dictionary2row(dictionary):
         df['freq_ttr'],
         df['r_2_i_verbs'],
         df['num_pos_tags'],
-        df['repetition'],
+        df['repetitions'],
         df['retracing'],
         df['fillers'],
         df['z_mlu_sli'],
