@@ -96,13 +96,13 @@ def get_feature_vec(text, times):
     feature_dict["child_TNW"] = f_number_of_words
 
     # get freq_ttr:
-    f_freq_ttr =  len(set(tokens_filtered)) / len(tokens_filtered)
+    f_freq_ttr =  len(set(tokens_filtered)) / len(tokens_filtered) if len(tokens_filtered) != 0 else 0
     feature_dict["freq_ttr"]= f_freq_ttr
 
     # get r_2_i_verbs
     raw_verbs = [verbs for verbs in pos_tags if verbs[1] == 'VB']
     inf_verbs = [verbs for verbs in pos_tags if verbs[1] in ['VBD', 'VBG', 'VBN', 'VBP', 'VBZ']]
-    f_r_2_i_verbs = float(len(raw_verbs))/len(inf_verbs)
+    f_r_2_i_verbs = float(len(raw_verbs))/len(inf_verbs) if len(inf_verbs) != 0 else 0
     feature_dict["r_2_i_verbs"] = f_r_2_i_verbs
 
     # get num_pos_tags
