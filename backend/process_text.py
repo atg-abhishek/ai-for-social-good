@@ -286,7 +286,6 @@ def get_feature_vec_default_times(text):
 
 def dictionary2row(dictionary):
     df = pd.DataFrame.from_dict(dictionary, orient='columns')
-    print df
     return [
         df['child_TNW'],
         5.0,
