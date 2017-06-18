@@ -22,6 +22,7 @@ def raw_audio():
         return "There was no file attached"
     f = request.files['file']
     res = call_speech_to_text_on_wav(f)
+    res = json.load(res)
     whole_transcript = find_transcript(res)
     res = get_feature_vec_default_times(whole_transcript)
     return jsonify({"result"  : res})
