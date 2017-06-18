@@ -26,8 +26,13 @@ def grammar_suggestions(phrase):
     matches = tool.check(phrase)
     res = []
     for m in matches:
+        if m.ruleId == 'UPPERCASE_SENTENCE_START':
+            continue
         res.append({'ruleId' : m.ruleId, 'replacements' : m.replacements})
+    print(res)
     x = float(len(res))
     number_of_grammar_errors = x/(1+abs(x))
-    return number_of_grammar_errors # number of grammatical errors
-
+    lst = []
+    for r in res:
+        lst.append(r['replacements'])
+    return {"number_of_grammar_errors" : number_of_grammar_errors, "suggestions" :lst } # number of grammatical errors
