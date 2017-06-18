@@ -1,10 +1,11 @@
 from sklearn import svm
-from sklearn.metrics import accuracy_score, f1_score
+from sklearn.metrics import accuracy_score, f1_score, roc_curve
 from sklearn.model_selection import train_test_split
 from imblearn.over_sampling import SMOTE
+from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
 import csv
 
-filename = 'all_data_R.csv'
+filename = 'training_data_1.csv'
 
 def to_float_or_0(elem):
 	try:
@@ -14,7 +15,8 @@ def to_float_or_0(elem):
 
 def get_relevant_features(row):
 	processed_row = [to_float_or_0(x) for x in row]
-	return str(row[0]), processed_row
+	processed_row[2] = 0
+	return int(row[2]), processed_row
 
 def produce_data_from_filename(filepath):
 	data = []
@@ -30,22 +32,24 @@ def produce_data_from_filename(filepath):
 	return data, Y
 
 
-sm = SMOTE(ratio='minority',k_neighbors = 10,random_state=42)
+rf = RandomForestClassifier(max_depth=5, n_estimators=10, class_weight="balanced")
 
 clf = svm.SVC(class_weight = 'balanced')
 data, Y = produce_data_from_filename(filename)
 
 x_train, x_test, y_train, y_test = train_test_split(data, Y, test_size = 0.1, random_state = 123)
 
-x_train, y_train = sm.fit_sample(x_train, y_train)
+# x_train, y_train = sm.fit_sample(x_train, y_train)
 
-clf.fit(x_train, y_train)
+rf.fit(x_train, y_train)
 
-y_preds = clf.predict(x_test)
+y_preds = rf.predict(x_test)
+# probs_rf = rf.predict_proba(x_test)
+# fpr_rf, tpr_rf, thresholds = roc_curve(y_test, probs_rf[:, 1])
+
+print (len([elem for elem in y_preds if elem == 1]))
+print (len(y_preds))
 
 print(accuracy_score(y_test, y_preds))
-print(f1_score(y_test, y_preds, pos_label='0'))
-
-print(len([elem for elem in y_preds if elem == 0]))
 
 
