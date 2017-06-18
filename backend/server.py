@@ -43,7 +43,6 @@ def raw_audio():
     number_of_grammar_errors = grammar_suggestions(clean_string)['number_of_grammar_errors']
     row = dictionary2row(res)
     row[-1] = number_of_grammar_errors
-    print(row)
     score = predict_score(row)[0]
     score = list(score) #from the model 
     semantic_score = calculate_semantic_distance(clean_string,image_number) 
@@ -60,7 +59,7 @@ def raw_audio():
         lst4.append(number_of_pauses)
         lst5 = specific_sess[0]['noge']
         lst5.append(number_of_grammar_errors)
-        sess.update({'model_scores' : lst1, 'semantic_scores' : lst2, 'durations' : lst3, 'nop' : lst4,'noge' : number_of_grammar_errors}, Sess.session_id == session_id)
+        sess.update({'model_scores' : lst1, 'semantic_scores' : lst2, 'durations' : lst3, 'nop' : lst4,'noge' : lst5}, Sess.session_id == session_id)
     else:
         sess.insert({'session_id' : session_id,  'model_scores' : [score] , 'semantic_scores' : [semantic_score] , 'durations' : [duration], 'nop' : [number_of_pauses], 'noge' : [number_of_grammar_errors]  })
     
