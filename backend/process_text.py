@@ -1,6 +1,7 @@
 import nltk
 import pandas as pd
 from requests import get
+from utilities import grammar_suggestions
 
 def eval_semantic_sim(str1, str2):
     """
@@ -23,6 +24,9 @@ def eval_semantic_sim(str1, str2):
         print
         'Error in getting similarity for %s: %s' % ((str1, str2), response)
         return 0.0
+
+def remove_hesitation(text):
+    return text.replace("%HESITATION","")
 
 def get_pos_contr(pos_tags):
     # possessives
@@ -92,13 +96,13 @@ def get_feature_vec(text, times):
     feature_dict["child_TNW"] = f_number_of_words
 
     # get freq_ttr:
-    f_freq_ttr =  len(set(tokens_filtered)) / len(tokens_filtered)
+    f_freq_ttr =  len(set(tokens_filtered)) / len(tokens_filtered) if len(tokens_filtered) != 0 else 0
     feature_dict["freq_ttr"]= f_freq_ttr
 
     # get r_2_i_verbs
     raw_verbs = [verbs for verbs in pos_tags if verbs[1] == 'VB']
     inf_verbs = [verbs for verbs in pos_tags if verbs[1] in ['VBD', 'VBG', 'VBN', 'VBP', 'VBZ']]
-    f_r_2_i_verbs = float(len(raw_verbs))/len(inf_verbs)
+    f_r_2_i_verbs = float(len(raw_verbs))/len(inf_verbs) if len(inf_verbs) != 0 else 0
     feature_dict["r_2_i_verbs"] = f_r_2_i_verbs
 
     # get num_pos_tags
@@ -275,11 +279,10 @@ def get_feature_vec(text, times):
 
 
     # grammar errors
+    no_hesitation_text = remove_hesitation(text, times)
+    feature_dict["total_error"] = grammar_suggestions(no_hesitation_text)['number_of_grammar_errors']
 
     return feature_dict
-
-def remove_hesitation(text):
-    return text.replace("%HESITATION","")
 
 def get_feature_vec_default_times(text):
     tokens = nltk.word_tokenize(text)
@@ -291,7 +294,7 @@ def dictionary2row(dictionary):
     df = pd.DataFrame(dictionary, index=[0])
     return [
         df['child_TNW'],
-        5.0,
+        4.0,
         0,
         df['freq_ttr'],
         df['r_2_i_verbs'],
@@ -315,12 +318,10 @@ def dictionary2row(dictionary):
         df['possessive_s'],
         df['uncontractible_copula'],
         df['regular_past_tense'],
-        2, #regular_3rd,
-        2, #irregular_3rd,
         df['uncontractible_auxiliary'],
         df['contractible_copula'],
         df['contractible_auxiliary'],
-        5 # total error
+        df['total_error'] # total error
     ]
 '''
 if __name__ == "__main__":
