@@ -39,10 +39,13 @@ def raw_audio():
     whole_transcript = find_transcript(res)
     res = get_feature_vec_default_times(whole_transcript)
     number_of_pauses = res['fillers']
+    clean_string = remove_hesitation(whole_transcript) # this string is the transcript of what was said without %HESITATION
+    number_of_grammar_errors = grammar_suggestions(clean_string)['number_of_grammar_errors']
     row = dictionary2row(res)
+    row[-1] = number_of_grammar_errors
+    print(row)
     score = predict_score(row)[0]
     score = list(score) #from the model 
-    clean_string = remove_hesitation(whole_transcript) # this string is the transcript of what was said without %HESITATION
     semantic_score = calculate_semantic_distance(clean_string,image_number) 
     
     specific_sess = sess.search(Sess.session_id == session_id)
@@ -53,24 +56,34 @@ def raw_audio():
         lst2.append(semantic_score)
         lst3 = specific_sess[0]['durations']
         lst3.append(duration)
-        sess.update({'model_scores' : lst1, 'semantic_scores' : lst2, 'durations' : lst3}, Sess.session_id == session_id)
+        lst4 = specific_sess[0]['nop']
+        lst4.append(number_of_pauses)
+        lst5 = specific_sess[0]['noge']
+        lst5.append(number_of_grammar_errors)
+        sess.update({'model_scores' : lst1, 'semantic_scores' : lst2, 'durations' : lst3, 'nop' : lst4,'noge' : number_of_grammar_errors}, Sess.session_id == session_id)
     else:
-        sess.insert({'session_id' : session_id, 'info' : {'model_scores' : [score] , 'semantic_scores' : [semantic_score] , 'durations' : [duration]}   })
+        sess.insert({'session_id' : session_id, 'info' : {'model_scores' : [score] , 'semantic_scores' : [semantic_score] , 'durations' : [duration], 'nop' : [number_of_pauses], 'noge' : number_of_grammar_errors}   })
     
-    
-    
-
-
     return jsonify({"result"  : "success"})
 
-@app.route('/get_results')
+@app.route('/get_results', methods=['POST'])
 def get_results():
-    score = random.uniform(0,1)
-    duration = random.uniform(30, 120)
-    number_of_pauses = random.randint(0,25)
-    
-    # TODO : calculate final score 
-    res = {"score" : score, "duration" : duration, "number_of_pauses" : number_of_pauses}
+    body = request.form
+    session_id = body['session_id']
+    specific_sess = sess.search(Sess.session_id == session_id)[0]
+    semantic_scores = specific_sess['semantic_scores'][:4]
+    noge = specific_sess['noge'][:4]
+    model_scores = specific_sess['model_scores'][:4]
+    final_sem_score = sum(semantic_scores)/len(semantic_scores)
+    final_noge_score = sum(noge)/len(noge)
+    final_model_score = sum(model_scores)/len(model_scores)    
+
+    final_score = 0.5*final_model_score + 0.2*final_noge_score + 0.3*final_sem_score
+
+    total_duration = sum(specific_sess['durations'][:4])
+    number_of_pauses = sum(specific_sess['nop'][:4])
+
+    res = {"score" : final_score, "duration" : total_duration, "number_of_pauses" : number_of_pauses}
 
     return jsonify(res)
 
