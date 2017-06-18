@@ -3,7 +3,7 @@ import sys
 from pprint import pprint
 
 def parse():
-    with open('data/speech_to_text3.json') as data_file:
+    with open('data/speech_to_text.json') as data_file:
         data = json.load(data_file)
         result = findKey(data, 'timestamps')
         for x in range(len(result)):
@@ -13,7 +13,9 @@ def parse():
         pprint(result)
 
 def findKey(dictionary, key):
-    result = []
+    result = ""
+    if key == "timestamps":
+        result = []
     if key in dictionary.keys():
         return dictionary[key]
 
