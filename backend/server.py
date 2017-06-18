@@ -2,7 +2,8 @@ from flask import Flask, request, jsonify
 import sys
 from semantic_distance import *
 from speech_to_text import *
-from pprint import pprint 
+from pprint import pprint
+from jsonParser import find_transcript
 
 HOST = None
 app = Flask(__name__)
@@ -20,6 +21,7 @@ def raw_audio():
         return "There was no file attached"
     f = request.files['file']
     res = call_speech_to_text_on_wav(f)
+    whole_transcript = find_transcript(res)
     return jsonify({"result"  : res})
 
 if __name__ == "__main__":
