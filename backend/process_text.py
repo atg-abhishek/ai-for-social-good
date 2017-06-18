@@ -311,8 +311,8 @@ def dictionary2row(dictionary):
         df['possessive_s'],
         df['uncontractible_copula'],
         df['regular_past_tense'],
-        2 #regular_3rd,
-        2 #irregular_3rd,
+        2, #regular_3rd,
+        2, #irregular_3rd,
         df['uncontractible_auxiliary'],
         df['contractible_copula']
         df['contractible_auxiliary'],
