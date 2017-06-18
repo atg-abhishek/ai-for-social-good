@@ -3,19 +3,18 @@ import sys
 from pprint import pprint
 
 def parse():
-    with open('data/speech_to_text.json') as data_file:
+    with open('data/speech_to_text3.json') as data_file:
         data = json.load(data_file)
-        result = findKey(data, 'transcript')
-        print "Final: ", result
-        # pprint(data.items())
+        result = findKey(data, 'timestamps')
+        for x in range(len(result)):
+            for y in range(len(result[x])):
+                result[x][y] = str(result[x][y])
+
+        pprint(result)
 
 def findKey(dictionary, key):
-    # print "dragon"
-    # print dictionary.keys()
-    result = ""
+    result = []
     if key in dictionary.keys():
-        # result += dictionary[key]
-        # return
         return dictionary[key]
 
     for k in dictionary.keys():
@@ -26,17 +25,7 @@ def findKey(dictionary, key):
                     requiredVal = findKey(listItem, key)
                     if requiredVal is not None:
                         result += requiredVal
-                        # print "1. ", result
-                        # print "Val: ", requiredVal
-                    # if requiredVal is not None:
-                    #     result += requiredVal
-                    # if requiredVal is not None:
-                    #     return requiredVal
-    # print "2. ", result
+
     return result
 
-
-def main():
-    parse()
-
-main()
+parse()
