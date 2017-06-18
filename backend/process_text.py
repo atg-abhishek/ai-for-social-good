@@ -277,11 +277,6 @@ def get_feature_vec(text, times):
     z_utts_sli = (f_verb_utt - mean_utts_sli)/std_utts_sli
     feature_dict["z_utts_sli"] = z_utts_sli
 
-
-    # grammar errors
-    no_hesitation_text = remove_hesitation(text)
-    feature_dict["total_error"] = grammar_suggestions(no_hesitation_text)['number_of_grammar_errors']
-
     return feature_dict
 
 def get_feature_vec_default_times(text):
@@ -321,7 +316,7 @@ def dictionary2row(dictionary):
         df['uncontractible_auxiliary'],
         df['contractible_copula'],
         df['contractible_auxiliary'],
-        df['total_error'] # total error
+        0 # total error
     ]
 '''
 if __name__ == "__main__":
