@@ -4,6 +4,7 @@ from semantic_distance import *
 from speech_to_text import *
 from pprint import pprint
 from jsonParser import find_transcript
+from process_text import get_feature_vec_default_times
 
 HOST = None
 app = Flask(__name__)
@@ -22,6 +23,7 @@ def raw_audio():
     f = request.files['file']
     res = call_speech_to_text_on_wav(f)
     whole_transcript = find_transcript(res)
+    res = get_feature_vec_default_times(whole_transcript)
     return jsonify({"result"  : res})
 
 if __name__ == "__main__":
