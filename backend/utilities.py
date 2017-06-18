@@ -1,6 +1,7 @@
 import simplejson as json
 import requests, language_check
 from pprint import pprint
+import math
 
 temp = []
 with open('data/image_text.json') as infile:
@@ -26,5 +27,7 @@ def grammar_suggestions(phrase):
     res = []
     for m in matches:
         res.append({'ruleId' : m.ruleId, 'replacements' : m.replacements})
-    return res
+    x = float(len(res))
+    number_of_grammar_errors = x/(1+abs(x))
+    return number_of_grammar_errors # number of grammatical errors
 
