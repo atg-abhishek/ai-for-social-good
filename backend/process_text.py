@@ -59,7 +59,7 @@ def get_pos_contr(pos_tags):
 def get_feature_vec(text, times):
 
     text = text.lower()
-    fillers = ['um', 'uh', 'oh', 'hm', '%HESITATION']
+    fillers = ['um', 'uh', 'oh', 'hm', '%HESITATION', 'HESITATION']
 
     tokens_unfiltered = nltk.word_tokenize(text)
 
