@@ -314,7 +314,7 @@ def dictionary2row(dictionary):
         2, #regular_3rd,
         2, #irregular_3rd,
         df['uncontractible_auxiliary'],
-        df['contractible_copula']
+        df['contractible_copula'],
         df['contractible_auxiliary'],
         5 # total error
     ]
