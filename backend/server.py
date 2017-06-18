@@ -68,7 +68,7 @@ def raw_audio():
 @app.route('/get_results', methods=['POST'])
 def get_results():
     body = request.form
-    session_id = body['session_id']
+    session_id = int(body['session_id'])
     specific_sess = sess.search(Sess.session_id == session_id)[0]
     semantic_scores = specific_sess['semantic_scores'][:4]
     noge = specific_sess['noge'][:4]
