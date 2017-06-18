@@ -6,20 +6,34 @@ def parse():
     with open('data/speech_to_text.json') as data_file:
         data = json.load(data_file)
         result = findKey(data, 'transcript')
-        print result
+        print "Final: ", result
         # pprint(data.items())
 
-
 def findKey(dictionary, key):
-    # transcriptDictionary = {}
-    print "dragon"
-    if key in dictionary:
+    # print "dragon"
+    # print dictionary.keys()
+    result = ""
+    if key in dictionary.keys():
+        # result += dictionary[key]
+        # return
         return dictionary[key]
-    for k, v in dictionary.items():
-        if isinstance(v,dict):
-            item = findKey(v, key)
-            if item is not None:
-                return item
+
+    for k in dictionary.keys():
+        v = dictionary[k]
+        if isinstance(v, list):
+            for listItem in v:
+                if isinstance(listItem, dict):
+                    requiredVal = findKey(listItem, key)
+                    if requiredVal is not None:
+                        result += requiredVal
+                        # print "1. ", result
+                        # print "Val: ", requiredVal
+                    # if requiredVal is not None:
+                    #     result += requiredVal
+                    # if requiredVal is not None:
+                    #     return requiredVal
+    # print "2. ", result
+    return result
 
 
 def main():
