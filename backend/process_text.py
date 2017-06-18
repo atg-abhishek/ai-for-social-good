@@ -279,7 +279,7 @@ def get_feature_vec(text, times):
 
 
     # grammar errors
-    no_hesitation_text = remove_hesitation(text, times)
+    no_hesitation_text = remove_hesitation(text)
     feature_dict["total_error"] = grammar_suggestions(no_hesitation_text)['number_of_grammar_errors']
 
     return feature_dict
