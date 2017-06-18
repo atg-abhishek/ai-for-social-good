@@ -40,8 +40,12 @@ def find_transcript(dictionary):
 
 def get_last_timestamp(dictionary):
     res = dictionary['results']
+    if len(res) == 0:
+        return 0.0
     last = res[len(res) - 1]['alternatives']
     pprint(last)
     last = last[0]['timestamps']
+    if len(last) == 0:
+        return 0.0
     last_word = last[len(last) - 1]
     return float(last_word[2])
