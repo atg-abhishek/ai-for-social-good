@@ -305,7 +305,7 @@ def dictionary2row(dictionary):
         df['verb_utt'],
         df['present_progressive'],
         df['proposition_in'],
-        df['propositions_out'],
+        df['proposition_on'],
         df['plural_s'],
         df['irregular_past_tense'],
         df['possessive_s'],
