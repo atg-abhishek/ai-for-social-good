@@ -219,8 +219,8 @@ def get_feature_vec(text, times):
     feature_dict["uncontractible_copula"] = f_uncont_copula
 
     # get z-score features
-    sli_df = pd.read_csv('sli.csv', index_col=0)
-    td_df = pd.read_csv('td.csv', index_col=0)
+    sli_df = pd.read_csv('data/sli.csv', index_col=0)
+    td_df = pd.read_csv('data/td.csv', index_col=0)
 
     mean_mlu_sli = sli_df.loc['mean', 'mlu_words']
     std_mlu_sli = sli_df.loc['std', 'mlu_words']
