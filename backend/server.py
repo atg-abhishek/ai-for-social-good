@@ -3,8 +3,8 @@ import sys
 from utilities import *
 from speech_to_text import *
 from pprint import pprint
-from jsonParser import find_transcript
-from process_text import get_feature_vec_default_times, dictionary2row
+from jsonParser import *
+from process_text import *
 from classifier import predict_score
 import pandas as pd
 from tinydb import TinyDB, Query
@@ -31,17 +31,21 @@ def raw_audio():
         return "There was no file attached"
     f = request.files['file']
     body = request.form
-    session_id = body['session_id'] #TODO  tell Arun
-    image_number = body['image_number'] #TODO: Arun
+    session_id = int(body['session_id']) 
+    image_number = int(body['image_number']) - 1
     res = call_speech_to_text_on_wav(f) 
     res = json.loads(res)
     whole_transcript = find_transcript(res)
+    print(whole_transcript)
     res = get_feature_vec_default_times(whole_transcript)
+    number_of_pauses = res['fillers']
+    # TODO : get the duration of the clip
     row = dictionary2row(res)
     score = predict_score(row)[0]
+    score = list(score)
     specific_sess = sess.search(Sess.session_id == session_id)
     if len(specific_sess)>0:
-        lst = specific_sess['scores']
+        lst = specific_sess[0]['scores']
         lst.append(score)
         sess.update({'scores' : lst}, Sess.session_id == session_id)
     else:
@@ -49,7 +53,7 @@ def raw_audio():
     
     # TODO : calculate final score 
 
-    return jsonify({"result"  : res})
+    return jsonify({"result"  : "success"})
 
 @app.route('/get_results')
 def get_results():
