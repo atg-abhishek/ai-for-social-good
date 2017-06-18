@@ -34,7 +34,6 @@ def produce_data_from_filename(filepath):
 
 rf = RandomForestClassifier(max_depth=5, n_estimators=10, class_weight="balanced")
 
-clf = svm.SVC(class_weight = 'balanced')
 data, Y = produce_data_from_filename(filename)
 
 x_train, x_test, y_train, y_test = train_test_split(data, Y, test_size = 0.1, random_state = 123)
@@ -42,14 +41,7 @@ x_train, x_test, y_train, y_test = train_test_split(data, Y, test_size = 0.1, ra
 # x_train, y_train = sm.fit_sample(x_train, y_train)
 
 rf.fit(x_train, y_train)
-
-y_preds = rf.predict(x_test)
-# probs_rf = rf.predict_proba(x_test)
-# fpr_rf, tpr_rf, thresholds = roc_curve(y_test, probs_rf[:, 1])
-
-print (len([elem for elem in y_preds if elem == 1]))
-print (len(y_preds))
-
-print(accuracy_score(y_test, y_preds))
+from sklearn.externals import joblib
+joblib.dump(clf, 'rfclassifier.pkl') 
 
 
