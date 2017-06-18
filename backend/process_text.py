@@ -55,6 +55,17 @@ def get_pos_contr(pos_tags):
 
     return f_possessive_s, f_cont_aux, f_cont_copula
 
+def filter_hesitations_from_ibm(tokens):
+    new_tokens = []
+    # will break if sentence ends in % but whatever
+    for i in range(len(tokens)):
+        if tokens[i] == '%' and tokens[i + 1].lower() == 'hesitation':
+            i = i + 1
+        else:
+            new_tokens.append(tokens[i])
+
+    return new_tokens
+
 
 def get_feature_vec(text, times):
 
@@ -64,7 +75,9 @@ def get_feature_vec(text, times):
     tokens_unfiltered = nltk.word_tokenize(text)
 
     # remove fillers
-    tokens_filtered = [word for word in tokens_unfiltered if word not in fillers]
+    tokens_filtered = filter_hesitations_from_ibm(tokens_unfiltered)
+    print(tokens_filtered)
+    # tokens_filtered = [word for word in tokens_unfiltered if word not in fillers]
 
     # get time_tuples for actual words only
     filtered_times = [times[i] for i in range(len(tokens_unfiltered))
@@ -272,7 +285,7 @@ def get_feature_vec_default_times(text):
     return get_feature_vec(text, times)
 
 def dictionary2row(dictionary):
-    df = pd.DataFrame.from_dict(dictionary, orient='index')
+    df = pd.DataFrame(dictionary, index=[0])
     return [
         df['child_TNW'],
         5.0,
@@ -280,7 +293,7 @@ def dictionary2row(dictionary):
         df['freq_ttr'],
         df['r_2_i_verbs'],
         df['num_pos_tags'],
-        df['repetition'],
+        df['repetitions'],
         df['retracing'],
         df['fillers'],
         df['z_mlu_sli'],
@@ -297,7 +310,13 @@ def dictionary2row(dictionary):
         df['irregular_past_tense'],
         df['possessive_s'],
         df['uncontractible_copula'],
-        df['']
+        df['regular_past_tense'],
+        2, #regular_3rd,
+        2, #irregular_3rd,
+        df['uncontractible_auxiliary'],
+        df['contractible_copula'],
+        df['contractible_auxiliary'],
+        5 # total error
     ]
 '''
 if __name__ == "__main__":
