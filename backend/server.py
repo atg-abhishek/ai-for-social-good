@@ -28,8 +28,8 @@ def raw_audio():
     res = json.loads(res)
     whole_transcript = find_transcript(res)
     res = get_feature_vec_default_times(whole_transcript)
-   #  row = dictionary2row(res)
-    return jsonify({"result"  : res})
+    row = dictionary2row(res)
+    return jsonify({"result"  : row})
 
 @app.route('/get_results')
 def get_results():
