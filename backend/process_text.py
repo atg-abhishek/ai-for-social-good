@@ -1,6 +1,7 @@
 import nltk
 import pandas as pd
 from requests import get
+from utilities import grammar_suggestions
 
 def eval_semantic_sim(str1, str2):
     """
@@ -278,6 +279,8 @@ def get_feature_vec(text, times):
 
 
     # grammar errors
+    no_hesitation_text = remove_hesitation(text, times)
+    feature_dict["total_error"] = grammar_suggestions(no_hesitation_text)['number_of_grammar_errors']
 
     return feature_dict
 
@@ -291,7 +294,7 @@ def dictionary2row(dictionary):
     df = pd.DataFrame(dictionary, index=[0])
     return [
         df['child_TNW'],
-        5.0,
+        4.0,
         0,
         df['freq_ttr'],
         df['r_2_i_verbs'],
@@ -315,12 +318,10 @@ def dictionary2row(dictionary):
         df['possessive_s'],
         df['uncontractible_copula'],
         df['regular_past_tense'],
-        0, #regular_3rd,
-        0, #irregular_3rd,
         df['uncontractible_auxiliary'],
         df['contractible_copula'],
         df['contractible_auxiliary'],
-        5 # total error
+        df['total_error'] # total error
     ]
 '''
 if __name__ == "__main__":
