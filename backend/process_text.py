@@ -298,7 +298,7 @@ def dictionary2row(dictionary):
         df['fillers'],
         df['z_mlu_sli'],
         df['z_mlu_td'],
-        df['z_ndw_sli']
+        df['z_ndw_sli'],
         df['z_ndw_td'],
         df['z_utts_sli'],
         df['z_utts_td'],
