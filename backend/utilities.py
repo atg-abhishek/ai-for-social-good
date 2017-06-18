@@ -1,5 +1,6 @@
 import simplejson as json
-import requests
+import requests, language_check
+from pprint import pprint
 
 temp = []
 with open('data/image_text.json') as infile:
@@ -18,3 +19,12 @@ def calculate_semantic_distance(phrase, number):
         res = float(r.text)
         sem_score_total += res
     return sem_score_total/5
+
+def grammar_suggestions(phrase):
+    tool = language_check.LanguageTool('en-US')
+    matches = tool.check(phrase)
+    res = []
+    for m in matches:
+        res.append({'ruleId' : m.ruleId, 'replacements' : m.replacements})
+    return res
+

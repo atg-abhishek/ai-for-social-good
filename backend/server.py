@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 import sys
-from semantic_distance import *
+from utilities import *
 from speech_to_text import *
 from pprint import pprint
 from jsonParser import find_transcript
